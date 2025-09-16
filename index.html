@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cegah & Kendalikan Diabetes pada Ibu Hamil</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        header {
+            background-color: #ffb6c1;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+            z-index: 999;
+        }
+        nav button {
+            background-color: #ffe4e1;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #4b0082;
+            transition: background-color 0.3s;
+        }
+        nav button:hover {
+            background-color: #ffc0cb;
+        }
+        .page {
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .hidden {
+            display: none;
+        }
+        .question-box {
+            background-color: #f0f8ff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .options button {
+            display: block;
+            width: 80%;
+            margin: 0.5rem auto;
+            padding: 1rem;
+            border: 2px solid #ff69b4;
+            border-radius: 25px;
+            background-color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .options button:hover {
+            background-color: #ff69b4;
+            color: white;
+        }
+        .correct {
+            background-color: #90ee90 !important;
+            border-color: #2e8b57 !important;
+            color: white !important;
+        }
+        .wrong {
+            background-color: #f08080 !important;
+            border-color: #dc143c !important;
+            color: white !important;
+        }
+        .info-section img, .food-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .youtube-video {
+            width: 100%;
+            height: 315px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cegah & Kendalikan Diabetes pada Ibu Hamil</h1>
+    </header>
+
+    <nav>
+        <button onclick="showPage('game')">Game Edukasi</button>
+        <button onclick="showPage('info')">Kenali Diabetes</button>
+        <button onclick="showPage('food')">Makanan & Video</button>
+        <button onclick="showPage('quiz')">Kuis Evaluasi</button>
+    </nav>
+
+    <main>
+        <section id="game-page" class="page active">
+            <h2>Petualangan Sehat Ibu Hamil</h2>
+            <div id="game-container">
+                <p>Klik tombol di bawah ini untuk memulai game edukasi!</p>
+                <button onclick="startGame()">Mulai Game</button>
+            </div>
+        </section>
+
+        <section id="info-page" class="page hidden">
+            <h2>Kenali Diabetes Gestasional</h2>
+            <div id="info-container"></div>
+        </section>
+
+        <section id="food-page" class="page hidden">
+            <h2>Resep Makanan Sehat & Inspirasi Video</h2>
+            <div id="food-container"></div>
+        </section>
+
+        <section id="quiz-page" class="page hidden">
+            <h2>Kuis Evaluasi: "Siap Jadi Ibu Hebat?"</h2>
+            <div id="quiz-container"></div>
+        </section>
+    </main>
+
+    <script>
+        const gameQuestions = [
+            { question: "Apa itu diabetes melitus gestasional?", options: ["A. Diabetes yang muncul hanya saat hamil", "B. Diabetes seumur hidup", "C. Alergi makanan saat hamil"], answer: "A. Diabetes yang muncul hanya saat hamil", feedback: "Benar! DMG hanya terjadi selama kehamilan dan biasanya hilang setelah melahirkan." },
+            { question: "Apa salah satu cara mencegah diabetes gestasional?", options: ["B. Makan sehat dan olahraga ringan", "C. Tidur sepanjang hari", "A. Makan es krim setiap hari"], answer: "B. Makan sehat dan olahraga ringan", feedback: "Hebat! Gaya hidup sehat sangat membantu ibu dan bayi tetap sehat." },
+            { question: "Makanan mana yang lebih baik untuk ibu hamil dengan DMG?", options: ["B. Permen dan soda", "A. Nasi merah dan sayur", "C. Donat dan cokelat"], answer: "A. Nasi merah dan sayur", feedback: "Ya! Nasi merah dan sayur penuh serat dan baik untuk kadar gula darah." },
+            { question: "Apa gejala umum dari diabetes ?", options: ["A. Haus berlebihan dan sering buang air kecil", "B. Bersin dan pilek", "C. Sakit gigi"], answer: "A. Haus berlebihan dan sering buang air kecil", feedback: "Betul! Gejala ini bisa jadi tanda DMG. Konsultasikan ke dokter ya!" },
+            { question: "Kenapa Diabtes harus ditangani?", options: ["A. Supaya ibu bisa makan sesuka hati", "B. Untuk menjaga kesehatan ibu dan bayi", "C. Agar bisa tidur lebih lama"], answer: "B. Untuk menjaga kesehatan ibu dan bayi", feedback: "Tepat! Kesehatan ibu dan bayi harus dijaga bersama." }
+        ];
+
+        const quizQuestions = [
+            { question: "Apa yang dimaksud dengan Diabetes Melitus dalam kehamilan?", options: ["A. Penyakit yang menyerang pernapasan saat hamil", "B. Kelebihan hormon selama kehamilan", "C. Kadar gula darah tinggi yang terjadi selama kehamilan", "D. Kekurangan cairan selama kehamilan"], answer: "C. Kadar gula darah tinggi yang terjadi selama kehamilan", explanation: "Diabetes Melitus dalam kehamilan adalah kondisi di mana kadar gula darah ibu hamil menjadi tinggi saat hamil." },
+            { question: "Sebutkan minimal 2 tanda atau gejala yang dapat muncul pada ibu hamil dengan diabetes!", options: ["A. Sering lapar dan sering haus", "B. Sakit kepala dan nyeri punggung", "C. Demam tinggi dan menggigil", "D. Hidung tersumbat dan batuk"], answer: "A. Sering lapar dan sering haus", explanation: "Ibu hamil yang mengalami diabetes bisa merasa sering haus, sering buang air kecil, dan mudah lelah." },
+            { question: "Pemeriksaan apa yang dilakukan untuk mendeteksi diabetes pada ibu hamil?", options: ["A. Tes darah dan tes urin", "B. Rontgen", "C. Pemeriksaan tekanan darah", "D. USG bayi"], answer: "A. Tes darah dan tes urin", explanation: "Pemeriksaan gula darah, seperti tes darah puasa dan tes toleransi glukosa, dapat mengetahui apakah ibu hamil mengalami diabetes." },
+            { question: "Apa saja cara yang bisa dilakukan ibu hamil untuk mengontrol diabetes selama kehamilan?", options: ["A. Makan makanan manis dan tidur banyak", "B. Tidak makan sama sekali", "C. Makan sehat, olahraga ringan, dan rutin periksa ke dokter", "D. Minum obat terus-menerus tanpa konsultasi"], answer: "C. Makan sehat, olahraga ringan, dan rutin periksa ke dokter", explanation: "Pola hidup sehat, olahraga teratur, dan pemeriksaan rutin ke dokter adalah kunci untuk mengontrol diabetes selama kehamilan." }
+        ];
+
+        let gameScore = 0;
+        let currentGameIndex = 0;
+        let quizScore = 0;
+        let currentQuizIndex = 0;
+        let quizTimer;
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+
+            if (pageId === 'game') {
+                const gameContainer = document.getElementById('game-container');
+                gameContainer.innerHTML = `<p>Klik tombol di bawah ini untuk memulai game edukasi!</p><button onclick="startGame()">Mulai Game</button>`;
+            } else if (pageId === 'info') {
+                loadInfoContent();
+            } else if (pageId === 'food') {
+                loadFoodContent();
+            } else if (pageId === 'quiz') {
+                startQuiz();
+            }
+        }
+
+        function startGame() {
+            gameScore = 0;
+            currentGameIndex = 0;
+            displayGameQuestion();
+        }
+
+        function displayGameQuestion() {
+            const container = document.getElementById('game-container');
+            if (currentGameIndex >= gameQuestions.length) {
+                container.innerHTML = `<h2>Selesai!</h2><p>Selamat! Skor Anda adalah ${gameScore} dari ${gameQuestions.length}.</p><p>Anda hebat telah belajar banyak!</p>`;
+                return;
+            }
+            const q = gameQuestions[currentGameIndex];
+            container.innerHTML = `
+                <div class="question-box">
+                    <p><strong>Pertanyaan ${currentGameIndex + 1}:</strong></p>
+                    <p>${q.question}</p>
+                    <div class="options">
+                        ${q.options.map(option => `<button onclick="checkGameAnswer('${option}', this)">${option}</button>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkGameAnswer(selectedOption, button) {
+            const q = gameQuestions[currentGameIndex];
+            if (selectedOption === q.answer) {
+                gameScore++;
+                button.classList.add('correct');
+                alert(`Benar! ${q.feedback}`);
+            } else {
+                button.classList.add('wrong');
+                const correctButton = Array.from(document.querySelectorAll('#game-container .options button')).find(btn => btn.textContent === q.answer);
+                if (correctButton) { correctButton.classList.add('correct'); }
+                alert(`Salah. Jawaban yang benar adalah ${q.answer}.`);
+            }
+            setTimeout(() => {
+                currentGameIndex++;
+                displayGameQuestion();
+            }, 1500);
+        }
+
+        function startQuiz() {
+            quizScore = 0;
+            currentQuizIndex = 0;
+            displayQuizQuestion();
+        }
+
+        function displayQuizQuestion() {
+            const container = document.getElementById('quiz-container');
+            if (currentQuizIndex >= quizQuestions.length) {
+                container.innerHTML = `<h2>Kuis Selesai!</h2><p>Skor Akhir Anda: ${quizScore} dari ${quizQuestions.length}.</p><p>Kerja bagus! Anda adalah ibu hamil yang cerdas!</p>`;
+                clearTimeout(quizTimer);
+                return;
+            }
+            const q = quizQuestions[currentQuizIndex];
+            let timeLeft = 15;
+            container.innerHTML = `
+                <div class="question-box">
+                    <p><strong>Waktu: <span id="quiz-timer">${timeLeft}</span> detik</strong></p>
+                    <p><strong>Pertanyaan ${currentQuizIndex + 1}:</strong></p>
+                    <p>${q.question}</p>
+                    <div class="options">
+                        ${q.options.map(option => `<button onclick="checkQuizAnswer('${option}', this)">${option}</button>`).join('')}
+                    </div>
+                </div>
+            `;
+            const timerElement = document.getElementById('quiz-timer');
+            quizTimer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(quizTimer);
+                    showAnswerFeedback(q.answer);
+                    setTimeout(() => {
+                        currentQuizIndex++;
+                        displayQuizQuestion();
+                    }, 3000);
+                }
+            }, 1000);
+        }
+
+        function checkQuizAnswer(selectedOption, button) {
+            clearInterval(quizTimer);
+            const q = quizQuestions[currentQuizIndex];
+            if (selectedOption === q.answer) {
+                quizScore++;
+                button.classList.add('correct');
+            } else {
+                button.classList.add('wrong');
+            }
+            showAnswerFeedback(q.answer);
+            setTimeout(() => {
+                currentQuizIndex++;
+                displayQuizQuestion();
+            }, 3000);
+        }
+
+        function showAnswerFeedback(correctAnswer) {
+            const correctButton = Array.from(document.querySelectorAll('#quiz-container .options button')).find(btn => btn.textContent === correctAnswer);
+            if (correctButton) { correctButton.classList.add('correct'); }
+        }
+
+        function loadInfoContent() {
+            const container = document.getElementById('info-container');
+            container.innerHTML = `
+                <div class="info-section">
+                    <h3>1. Pengertian</h3>
+                    <p>Diabetes Melitus dalam kehamilan adalah kondisi gula darah tinggi saat hamil, baik karena sudah ada sebelumnya (DMH) atau baru muncul saat hamil (DMG). DMG biasanya hilang setelah melahirkan, tapi bisa menimbulkan komplikasi pada ibu dan bayi.</p>
+                    <p><img src="image_ee8554.jpg" alt="Pengertian Diabetes Gestasional"></p>
+                    
+                    <h3>2. Tanda dan Gejala</h3>
+                    <ul>
+                        <li><strong>Sering haus (polidipsia)</strong></li>
+                        <li><strong>Sering buang air kecil (poliuria)</strong></li>
+                        <li><strong>Berat badan turun walau makan banyak</strong></li>
+                    </ul>
+                    <p>Sebagian ibu hamil bisa tanpa gejala, sehingga skrining penting dilakukan.</p>
+                    <p><img src="image_ee8536.jpg" alt="Tanda dan Gejala Diabetes"></p>
+                    
+                    <h3>3. Pemeriksaan</h3>
+                    <p>Skrining DMG dilakukan pada usia kehamilan 24–28 minggu dengan Tes Toleransi Glukosa Oral (OGTT 75g).</p>
+                    <p><img src="image_ee8519.png" alt="Pemeriksaan Diabetes"></p>
+                    <p>Faktor risiko: obesitas, riwayat DMG, keluarga dengan diabetes, pernah melahirkan bayi besar (>4 kg), dll.</p>
+                    
+                    <h3>4. Penanganan & Pencegahan</h3>
+                    <ul>
+                        <li><strong>Diet sehat:</strong> makan sering dalam porsi kecil, tinggi serat, rendah gula</li>
+                        <li><strong>Olahraga ringan:</strong> jalan kaki, berenang, dll selama 30–40 menit/hari</li>
+                        <li><strong>Obat/Insulin</strong> jika diet dan olahraga tidak cukup</li>
+                        <li><strong>Dukungan keluarga dan tenaga medis</strong> sangat penting</li>
+                    </ul>
+                    <p><img src="image_ee84f8.jpg" alt="Pencegahan Diabetes"></p>
+                    
+                    <h3>5. Komplikasi yang Bisa Dicegah</h3>
+                    <p>Preeklamsia, bayi besar (makrosomia), hipoglikemia pada bayi, operasi caesar, hingga diabetes tipe 2 di masa depan. Penting untuk kontrol gula darah secara rutin dan skrining ulang setelah melahirkan (6–12 minggu pasca persalinan, lalu tiap 3 tahun).</p>
+                    <p><img src="image_ee8554.jpg" alt="Komplikasi Diabetes"></p>
+                </div>
+            `;
+        }
+
+        function loadFoodContent() {
+            const container = document.getElementById('food-container');
+            container.innerHTML = `
+                <div class="food-section">
+                    <h3>Makanan Aman untuk Ibu Hamil</h3>
+                    <ul>
+                        <li><strong>Karbohidrat Kompleks (Gandum Utuh):</strong> Memiliki indeks glikemik rendah, yang berarti tidak menyebabkan lonjakan gula darah secara drastis. Contohnya nasi merah, roti gandum utuh, dan oatmeal.</li>
+                    </ul>
+                    <p><img src="image_ee84d9.png" alt="Karbohidrat Kompleks"></p>
+                    <ul>
+                        <li><strong>Sayuran Berdaun Hijau:</strong> Kaya serat yang membantu memperlambat penyerapan gula dan membuat Anda merasa kenyang lebih lama.</li>
+                    </ul>
+                    <p><img src="image_ee84ba.jpg" alt="Sayuran Hijau"></p>
+                    <ul>
+                        <li><strong>Protein Tanpa Lemak:</strong> Penting untuk pertumbuhan janin dan mengontrol kadar gula darah. Pilih ikan seperti salmon, tuna, dada ayam tanpa kulit, atau telur.</li>
+                    </ul>
+                    <p><img src="image_ee849c.jpg" alt="Protein Tanpa Lemak"></p>
+                    <ul>
+                        <li><strong>Buah-buahan Segar:</strong> Meskipun mengandung gula alami, buah-buahan juga kaya serat. Konsumsi buah-buahan utuh dalam porsi terkontrol adalah pilihan yang baik.</li>
+                    </ul>
+                    <p><img src="image_ee847d.jpg" alt="Buah-buahan Segar"></p>
+                    
+                    <h3>Minuman & Makanan yang Harus Dibatasi atau Dihindari</h3>
+                    <p>Penting untuk memahami apa yang harus dikurangi atau dihindari sama sekali untuk mengendalikan kadar gula darah selama kehamilan.</p>
+                    <ul>
+                        <li><strong>Minuman Manis Kemasan:</strong> Seperti minuman bersoda dan jus buah kemasan karena mengandung gula yang sangat tinggi.</li>
+                    </ul>
+                    <p><img src="image_ee845a.jpg" alt="Minuman Manis"></p>
+                    <ul>
+                        <li><strong>Karbohidrat Olahan:</strong> Makanan seperti nasi putih, roti putih, pasta, dan kue kering memiliki indeks glikemik tinggi sehingga gula darah dapat naik drastis.</li>
+                    </ul>
+                    <p><img src="image_ee845f.jpg" alt="Karbohidrat Olahan"></p>
+                    <ul>
+                        <li><strong>Makanan dan Camilan Manis:</strong> Hindari permen, kue, biskuit, dan es krim karena kandungan gula dan lemaknya sangat tinggi.</li>
+                    </ul>
+                    <p><img src="image_ee845a.jpg" alt="Makanan dan Camilan Manis"></p>
+                    <ul>
+                        <li><strong>Makanan Cepat Saji dan Olahan:</strong> Makanan ini cenderung tinggi lemak, garam, dan pengawet, yang dapat menyebabkan penambahan berat badan tidak sehat.</li>
+                    </ul>
+                    <p><img src="image_ee845f.jpg" alt="Makanan Cepat Saji"></p>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('game');
+        });
+    </script>
+</body>
+</html>
